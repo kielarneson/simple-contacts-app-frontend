@@ -26,7 +26,19 @@
       <img :src="contact.image" alt="" />
       <p>{{ contact.email }}</p>
       <p>{{ contact.phone_number }}</p>
+      <button v-on:click="showContact(contact)">More Info</button>
     </div>
+
+    <dialog id="contact-details">
+      <form method="dialog">
+        <h1>Contact Info</h1>
+        <p>First Name: {{ currentContact.first_name }}</p>
+        <p>Last Name: {{ currentContact.last_name }}</p>
+        <p>Email: {{ currentContact.email }}</p>
+        <p>Phone Number: {{ currentContact.phone_number }}</p>
+        <button>Close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
@@ -44,6 +56,7 @@ export default {
     return {
       contacts: [],
       newContactParams: {},
+      currentContact: {},
     };
   },
   created: function () {
@@ -62,6 +75,10 @@ export default {
         this.contacts.push(response.data);
         this.newContactParams = {};
       });
+    },
+    showContact: function (contact) {
+      this.currentContact = contact;
+      document.querySelector("#contact-details").showModal();
     },
   },
 };
