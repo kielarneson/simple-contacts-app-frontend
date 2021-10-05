@@ -32,10 +32,23 @@
     <dialog id="contact-details">
       <form method="dialog">
         <h1>Contact Info</h1>
-        <p>First Name: {{ currentContact.first_name }}</p>
-        <p>Last Name: {{ currentContact.last_name }}</p>
-        <p>Email: {{ currentContact.email }}</p>
-        <p>Phone Number: {{ currentContact.phone_number }}</p>
+        <div>
+          First Name:
+          <input type="text" v-model="currentContact.first_name" />
+        </div>
+        <div>
+          Last Name:
+          <input type="text" v-model="currentContact.last_name" />
+        </div>
+        <div>
+          Email:
+          <input type="text" v-model="currentContact.email" />
+        </div>
+        <div>
+          Phone Number:
+          <input type="text" v-model="currentContact.phone_number" />
+        </div>
+        <button v-on:click="updateContact(currentContact)">Update</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -79,6 +92,13 @@ export default {
     showContact: function (contact) {
       this.currentContact = contact;
       document.querySelector("#contact-details").showModal();
+    },
+    updateContact: function (contact) {
+      var updateContactParams = contact;
+      axios.patch(`/contacts/${contact.id}.json`, updateContactParams).then((response) => {
+        console.log("Update contact", response);
+        this.currentContact = {};
+      });
     },
   },
 };
