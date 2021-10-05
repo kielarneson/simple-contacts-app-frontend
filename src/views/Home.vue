@@ -18,8 +18,13 @@
         Phone Number:
         <input type="text" v-model="newContactParams.phone_number" />
       </div>
+      <div>
+        Image URL:
+        <input type="text" v-model="newContactParams.image" />
+      </div>
       <button v-on:click="createContacts()">Create</button>
     </div>
+
     <h1>Contacts</h1>
     <div v-for="contact in contacts" v-bind:key="contact.id">
       <h2>{{ contact.first_name }} {{ contact.last_name }}</h2>
@@ -47,6 +52,10 @@
         <div>
           Phone Number:
           <input type="text" v-model="currentContact.phone_number" />
+        </div>
+        <div>
+          Image URL:
+          <input type="text" v-model="currentContact.image" />
         </div>
         <button v-on:click="updateContact(currentContact)">Update</button>
         <button v-on:click="deleteContact(currentContact)">Delete</button>
@@ -97,14 +106,14 @@ export default {
     updateContact: function (contact) {
       var updateContactParams = contact;
       axios.patch(`/contacts/${contact.id}.json`, updateContactParams).then((response) => {
-        console.log("Update contact", response);
+        console.log("Update contact", response.data);
         this.currentContact = {};
       });
     },
     deleteContact: function (contact) {
       this.currentContact = contact;
       axios.delete(`/contacts/${contact.id}.json`).then((response) => {
-        console.log("Successfully deleted contact", response);
+        console.log("Successfully deleted contact", response.data);
         var index = this.contacts.indexOf(contact);
         this.contacts.splice(index, 1);
       });
